@@ -1,0 +1,11 @@
+helm install my-mysql-operator mysql-operator/mysql-operator \
+  --namespace sql-server \
+  --create-namespace
+
+# Create secret for MySQL root password
+kubectl create secret generic my-mysql-secret \
+  --namespace sql-server \
+  --from-literal=rootPassword=Camrin0208@
+
+  # Deploy the MySQL cluster
+kubectl apply -f mysql-cluster.yaml

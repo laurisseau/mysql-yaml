@@ -1,0 +1,26 @@
+# mysql-cluster.yaml
+apiVersion: mysql.oracle.com/v2
+kind: InnoDBCluster
+metadata:
+  name: my-mysql-cluster
+  namespace: sql-server
+spec:
+  secretName: my-mysql-secret
+  tlsUseSelfSigned: true
+  instances: 1
+  router:
+    instances: 1
+  
+  # Node selection for MySQL pods
+  podSpec:
+    nodeSelector:
+      kubernetes.io/hostname: workerserver
+  
+  # Optional: Add resource limits
+  resources:
+    requests:
+      memory: "1Gi"
+      cpu: "500m"
+    limits:
+      memory: "2Gi"
+      cpu: "1000m"
