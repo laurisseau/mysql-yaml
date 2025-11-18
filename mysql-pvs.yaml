@@ -1,16 +1,15 @@
-# mysql-pvs.yaml
 apiVersion: v1
 kind: PersistentVolume
 metadata:
   name: my-mysql-cluster-0
 spec:
   capacity:
-    storage: 8Gi
+    storage: 2Gi
   volumeMode: Filesystem
   accessModes:
     - ReadWriteOnce
   persistentVolumeReclaimPolicy: Retain
-  storageClassName: local-storage
+  storageClassName: ""   # MUST be empty to match PVC
   local:
     path: /data/my-mysql-cluster-0
   nodeAffinity:
@@ -20,4 +19,5 @@ spec:
         - key: kubernetes.io/hostname
           operator: In
           values:
-          - workerserver
+            - workerserver
+
