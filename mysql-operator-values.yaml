@@ -1,4 +1,4 @@
-# mysql-operator-values.yaml
+# This nodeSelector ONLY affects the MySQL Operator
 nodeSelector:
   kubernetes.io/hostname: workerserver
 
@@ -10,3 +10,29 @@ resources:
   limits:
     memory: "512Mi"
     cpu: "500m"
+
+# server pods
+server:
+  podSpec:
+    nodeSelector:
+      kubernetes.io/hostname: workerserver
+
+# router pods
+router:
+  podSpec:
+    nodeSelector:
+      kubernetes.io/hostname: workerserver
+
+# any other values you need
+baseServerId: 1000
+serverInstances: 3
+routerInstances: 1
+tls:
+  useSelfSigned: true
+
+# Required credentials for the MySQL cluster
+credentials:
+  root:
+    user: root        # optional, defaults to 'root'
+    password: sakila  # set your secure password here
+    host: '%'         # optional, host allowed for root access

@@ -9,3 +9,14 @@ kubectl create secret generic my-mysql-secret \
 
   # Deploy the MySQL cluster
 kubectl apply -f mysql-cluster.yaml
+
+# command to login to sql
+kubectl exec -it mycluster-0 -n sql-server -c mysql -- mysql -uroot -psakila
+
+# restrict to cluster pod subnet (more secure) run in the mysql database
+CREATE USER 'workerserver'@'10.244.0.0/16' IDENTIFIED BY 'your_password';
+GRANT ALL PRIVILEGES ON *.* TO 'workerserver'@'10.244.0.0/16';
+FLUSH PRIVILEGES;
+
+#connect to mysql from kuberbetes cluster
+mysql -h <NODE_IP> -P <NODE_PORT> -u <USERNAME> -p
