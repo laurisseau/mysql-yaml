@@ -1,4 +1,3 @@
-# mysql-cluster.yaml
 apiVersion: mysql.oracle.com/v2
 kind: InnoDBCluster
 metadata:
@@ -8,15 +7,23 @@ spec:
   secretName: my-mysql-secret
   tlsUseSelfSigned: true
   instances: 1
-  router:
-    instances: 1
+  version: "9.5.0" 
+  baseServerId: 1000 
   
   # Node selection for MySQL pods
   podSpec:
     nodeSelector:
       kubernetes.io/hostname: workerserver
   
-  # Optional: Add resource limits
+  # Router configuration
+  router:
+    instances: 1
+    # Optional: Also pin router to specific node
+    podSpec:
+      nodeSelector:
+        kubernetes.io/hostname: workerserver
+  
+  # Resource limits (your current ones are good)
   resources:
     requests:
       memory: "1Gi"
