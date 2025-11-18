@@ -7,27 +7,35 @@ spec:
   secretName: my-mysql-secret
   tlsUseSelfSigned: true
   instances: 1
-  version: "9.5.0" 
-  baseServerId: 1000 
-  
-  # Node selection for MySQL pods
+  version: "9.5.0"
+  baseServerId: 1000
+
+  # --- MySQL Pod Settings ---
   podSpec:
     nodeSelector:
       kubernetes.io/hostname: workerserver
-  
-  # Router configuration
+    containers:
+      - name: mysql
+        resources:
+          requests:
+            memory: "1Gi"
+            cpu: "500m"
+          limits:
+            memory: "2Gi"
+            cpu: "1000m"
+
+  # --- Router Pod Settings ---
   router:
     instances: 1
-    # Optional: Also pin router to specific node
     podSpec:
       nodeSelector:
         kubernetes.io/hostname: workerserver
-  
-  # Resource limits (your current ones are good)
-  resources:
-    requests:
-      memory: "1Gi"
-      cpu: "500m"
-    limits:
-      memory: "2Gi"
-      cpu: "1000m"
+      containers:
+        - name: router
+          resources:
+            requests:
+              memory: "512Mi"
+              cpu: "300m"
+            limits:
+              memory: "1Gi"
+              cpu: "500m"
